@@ -235,6 +235,9 @@ if not vim.loop.fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
+-- set termguicolors
+vim.opt.termguicolors = true
+
 -- [[ Configure and install plugins ]]
 --
 --  To check the current status of your plugins, run
@@ -258,12 +261,22 @@ require('lazy').setup({ -- NOTE: Plugins can be added with a link (or for a gith
 --  This is equivalent to:
 --    require('Comment').setup({})
 -- "gc" to comment visual regions/lines
-'junegunn/limelight.vim', {
+{
+    "folke/twilight.nvim",
+    config = function()
+        require("twilight").setup({
+            context = 0,
+            expand = { -- markdown
+            "paragraph", "fenced_code_block", "list"}
+        })
+    end
+}, {
     "folke/zen-mode.nvim",
     config = function()
         require("zen-mode").setup {
             window = {
                 width = 80,
+                backdrop = .80,
                 options = {
                     number = false,
                     signcolumn = "no",
@@ -272,12 +285,12 @@ require('lazy').setup({ -- NOTE: Plugins can be added with a link (or for a gith
                     list = false
                 }
             },
-            on_open = function()
-                vim.cmd('Limelight')
-            end,
-            on_close = function()
-                vim.cmd('Limelight!')
-            end
+            plugins = {
+                options = {
+                    laststatus = 0
+                }
+            }
+
         }
     end
 
