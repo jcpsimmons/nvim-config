@@ -289,8 +289,13 @@ require('lazy').setup({ -- NOTE: Plugins can be added with a link (or for a gith
                 options = {
                     laststatus = 0
                 }
-            }
-
+            },
+            on_open = function()
+                vim.opt.linebreak = true
+            end,
+            on_close = function()
+                vim.opt.linebreak = false
+            end
         }
     end
 
